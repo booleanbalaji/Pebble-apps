@@ -1,0 +1,31 @@
+{
+  "name": "tutorial-watchface",
+  "author": "User",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@rebble/clay": "^1.0.8"
+  },
+  "pebble": {
+    "displayName": "Tutorial Watchface",
+    "uuid": "6F568DD0-C82A-4CC0-B2F4-494971E29C1E",
+    "type": "moddable",
+    "sdkVersion": 3,
+    "multiJs": true,
+    "targetPlatforms": ["emery", "gabbro"],
+    "watchapp": {
+      "watchface": true
+    },
+    "capabilities": ["location"],
+    "messageKeys": [
+      "WEATHER_TEMP",
+      "WEATHER_DESC",
+      "TEMPERATURE_UNIT",
+      "BG_COLOR",
+      "TEXT_COLOR",
+      "SHOW_DATE",
+      "HOUR_FORMAT"
+    ],
+    "media": []
+  }
+}

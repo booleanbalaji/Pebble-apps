@@ -1,0 +1,19 @@
+{
+  "name": "minimalist-digital",
+  "author": "User",
+  "version": "1.0.0",
+  "private": true,
+  "pebble": {
+    "displayName": "Minimalist Digital",
+    "uuid": "E94239EA-BB4F-4B7C-B0F0-303C34687819",
+    "type": "moddable",
+    "sdkVersion": 3,
+    "multiJs": true,
+    "targetPlatforms": ["emery", "gabbro"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [],
+    "media": []
+  }
+}
