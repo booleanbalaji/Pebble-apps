@@ -131,6 +131,15 @@ pebble install --emulator gabbro   # test round display
 # sideload .pbw to physical watch via the Pebble app
 ```
 
+## Workflow Instructions
+
+**On every PR merge**, update `README.md` before closing out the task:
+1. Reflect any new apps, removed apps, or changed features in the **Apps** section.
+2. Update the **Project Structure** tree if files were added or removed.
+3. Append a new dated entry to the **Changelog** section (format: `### YYYY-MM-DD`) describing what changed. Keep entries concise — one bullet per logical change.
+
+Do not skip this step even for small changes. The README is the living record of the project.
+
 ## Notes
 - Font resource names (`Jersey10-Regular-56.fnt`, `Bitham-Bold-42.fnt`, etc.) must match the exact names provided by your installed Alloy SDK. Check `pebble.sdkVersion` in package.json and the SDK docs if build fails on font resources.
 - Alloy currently officially targets `emery` and `gabbro`. The Pebble 2 Duo (asterix) may require PebbleOS ≥ 4.9.127 to run Alloy apps; check release notes at https://developer.repebble.com/sdk/changelogs/4.9.127/
