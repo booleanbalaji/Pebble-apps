@@ -9,6 +9,10 @@ Watchface collection for the **Pebble 2 Duo** built with [Alloy](https://develop
 ### Tutorial Watchface
 > Follows the official 6-part Alloy watchface tutorial to completion.
 
+| Emery (200×228) | Gabbro (260×260) |
+|:-:|:-:|
+| ![Tutorial — Emery](assets/tutorial-emery.png) | ![Tutorial — Gabbro](assets/tutorial-gabbro.png) |
+
 - Digital time and date with Jersey10 bitmap fonts
 - Battery bar with charge-level colour coding (green / yellow / red)
 - Bluetooth disconnect indicator
@@ -18,6 +22,10 @@ Watchface collection for the **Pebble 2 Duo** built with [Alloy](https://develop
 
 ### Minimalist Digital
 > Clean, distraction-free watchface with no network calls.
+
+| Emery (200×228) | Gabbro (260×260) |
+|:-:|:-:|
+| ![Minimalist — Emery](assets/minimalist-emery.png) | ![Minimalist — Gabbro](assets/minimalist-gabbro.png) |
 
 - Large digital time centred on screen
 - Date in muted grey below
@@ -54,6 +62,11 @@ Sideload the compiled `.pbw` from the `build/` directory via the Pebble phone ap
 
 ```
 Pebble-apps/
+├── assets/                      # mockup images
+│   ├── tutorial-emery.png
+│   ├── tutorial-gabbro.png
+│   ├── minimalist-emery.png
+│   └── minimalist-gabbro.png
 ├── tutorial-watchface/
 │   ├── package.json
 │   └── src/
@@ -76,3 +89,4 @@ Pebble-apps/
 - Added `tutorial-watchface` — complete Alloy tutorial (parts 1–6) with weather, Clay settings, and localStorage caching
 - Added `minimalist-digital` — no-dependency watchface with time, date, battery %, and BT indicator
 - Added `CLAUDE.md` with full project context, API reference, and build notes
+- Added watchface mockups for both apps on emery and gabbro displays (`assets/`)
