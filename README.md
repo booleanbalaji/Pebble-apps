@@ -1,6 +1,6 @@
 # Pebble Duo 2 Apps
 
-Watchface collection for the **Pebble 2 Duo** built with [Alloy](https://developer.repebble.com/guides/alloy/) — Pebble's modern JavaScript SDK powered by Moddable/XS.
+App collection for the **Pebble 2 Duo** built with [Alloy](https://developer.repebble.com/guides/alloy/) — Pebble's modern JavaScript SDK powered by Moddable/XS.
 
 ---
 
@@ -32,6 +32,21 @@ Watchface collection for the **Pebble 2 Duo** built with [Alloy](https://develop
 - Battery percentage top-right (turns red at ≤ 20%)
 - "BT" indicator top-left only when disconnected from phone
 
+### Sensor Diagnostics
+> Hardware health tool — opens from the menu, navigate pages with Up/Down, exit with Back.
+
+| Page | Emery (200×228) | Gabbro (260×260) |
+|:--|:-:|:-:|
+| System | ![System — Emery](assets/diagnostics-emery-p1.png) | ![System — Gabbro](assets/diagnostics-gabbro-p1.png) |
+| Motion | ![Motion — Emery](assets/diagnostics-emery-p2.png) | ![Motion — Gabbro](assets/diagnostics-gabbro-p2.png) |
+| Input  | ![Input — Emery](assets/diagnostics-emery-p3.png)  | ![Input — Gabbro](assets/diagnostics-gabbro-p3.png)  |
+
+- **System page**: battery bar (colour-coded), Bluetooth state, live time/date, uptime
+- **Motion page**: accelerometer X/Y/Z in milli-G (live, 1 Hz), step count via health API
+- **Input page**: last button pressed, live held/released state for all four buttons
+- All sensor reads are wrapped in try/catch — unavailable sensors show "N/A"
+- No pkjs companion, no network calls, no dependencies
+
 ---
 
 ## Getting Started
@@ -42,7 +57,7 @@ Watchface collection for the **Pebble 2 Duo** built with [Alloy](https://develop
 
 **Build**
 ```sh
-cd tutorial-watchface   # or minimalist-digital
+cd tutorial-watchface   # or minimalist-digital or sensor-diagnostics
 npm install             # only needed for tutorial-watchface
 pebble build
 ```
@@ -62,22 +77,28 @@ Sideload the compiled `.pbw` from the `build/` directory via the Pebble phone ap
 
 ```
 Pebble-apps/
-├── assets/                      # mockup images
+├── assets/                          # mockup images
 │   ├── tutorial-emery.png
 │   ├── tutorial-gabbro.png
 │   ├── minimalist-emery.png
-│   └── minimalist-gabbro.png
+│   ├── minimalist-gabbro.png
+│   ├── diagnostics-emery-p{1-3}.png
+│   └── diagnostics-gabbro-p{1-3}.png
 ├── tutorial-watchface/
 │   ├── package.json
 │   └── src/
-│       ├── embeddedjs/main.js   # watch-side rendering + logic
+│       ├── embeddedjs/main.js       # watch-side rendering + logic
 │       └── pkjs/
-│           ├── index.js         # phone-side weather fetch + Clay
-│           └── config.js        # Clay settings UI
-└── minimalist-digital/
+│           ├── index.js             # phone-side weather fetch + Clay
+│           └── config.js            # Clay settings UI
+├── minimalist-digital/
+│   ├── package.json
+│   └── src/
+│       └── embeddedjs/main.js       # watch-side only
+└── sensor-diagnostics/
     ├── package.json
     └── src/
-        └── embeddedjs/main.js   # watch-side only
+        └── embeddedjs/main.js       # 3-page sensor readout, no pkjs
 ```
 
 ---
@@ -90,3 +111,7 @@ Pebble-apps/
 - Added `minimalist-digital` — no-dependency watchface with time, date, battery %, and BT indicator
 - Added `CLAUDE.md` with full project context, API reference, and build notes
 - Added watchface mockups for both apps on emery and gabbro displays (`assets/`)
+
+### 2026-05-23 (continued)
+- Added `sensor-diagnostics` — 3-page watchapp showing battery, BT, time, accelerometer X/Y/Z, step count, and live button state; graceful N/A for absent sensors
+- Added diagnostics mockups for all 3 pages on emery and gabbro (`assets/diagnostics-*`)

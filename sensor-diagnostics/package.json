@@ -1,0 +1,20 @@
+{
+  "name": "sensor-diagnostics",
+  "author": "User",
+  "version": "1.0.0",
+  "private": true,
+  "pebble": {
+    "displayName": "Sensor Diagnostics",
+    "uuid": "A4FF68AF-CFEF-4DA8-AD04-98912EBC4A49",
+    "type": "moddable",
+    "sdkVersion": 3,
+    "multiJs": true,
+    "targetPlatforms": ["emery", "gabbro"],
+    "watchapp": {
+      "watchface": false
+    },
+    "capabilities": [],
+    "messageKeys": [],
+    "media": []
+  }
+}
