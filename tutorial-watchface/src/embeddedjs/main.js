@@ -114,11 +114,12 @@ function draw(now) {
   const barColor = batteryLevel > 40 ? GREEN : batteryLevel > 20 ? YELLOW : RED;
   render.fillRectangle(barColor, BATTERY_BAR_MARGIN, BATTERY_BAR_Y, barW, BATTERY_BAR_H);
 
-  // Disconnected indicator
+  // Disconnected indicator — sits below the battery bar, not on top of it
   if (!connected) {
     const xStr = "X";
     const xW = render.getTextWidth(xStr, statusFont);
-    render.drawText(xStr, statusFont, RED, W - xW - BATTERY_BAR_MARGIN, BATTERY_BAR_Y);
+    render.drawText(xStr, statusFont, RED, W - xW - BATTERY_BAR_MARGIN,
+      BATTERY_BAR_Y + BATTERY_BAR_H + 2);
   }
 
   // Calculate total content height for vertical centering
@@ -127,7 +128,9 @@ function draw(now) {
   const weatH = weather ? statusFont.height + 4 : 0;
   const contentH = timeH + dateH + weatH;
 
-  let y = Math.round((H - contentH) / 2);
+  // Clamp so content never overlaps the battery bar / disconnect indicator at top
+  const MIN_Y = BATTERY_BAR_Y + BATTERY_BAR_H + statusFont.height + 6;
+  let y = Math.max(MIN_Y, Math.round((H - contentH) / 2));
 
   // Time
   const timeStr = formatTime(now);

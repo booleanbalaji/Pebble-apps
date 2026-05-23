@@ -18,6 +18,8 @@ const timeFont = parseBMF(parseRLE(new Resource("Bitham-Bold-42.fnt")));
 const dateFont = parseBMF(parseRLE(new Resource("Gothic-Bold-24.fnt")));
 const infoFont = parseBMF(parseRLE(new Resource("Gothic-Regular-18.fnt")));
 
+const MARGIN = 6;
+
 const DAYS   = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -42,32 +44,32 @@ function draw(now) {
   render.begin(0, 0, W, H);
   render.fillRectangle(BLACK, 0, 0, W, H);
 
-  // Battery % — top right
-  const batStr = `${batteryLevel}%`;
-  const batW   = render.getTextWidth(batStr, infoFont);
-  render.drawText(batStr, infoFont, batteryLevel <= 20 ? RED : GRAY, W - batW - 6, 6);
+  const timeStr = formatTime(now);
+  const dateStr = formatDate(now);
+  const batStr  = `${batteryLevel}%`;
 
-  // Bluetooth indicator — top left, only when disconnected
-  if (!connected) {
-    render.drawText("BT", infoFont, RED, 6, 6);
-  }
+  const infoH   = infoFont.height;
+  const timeH   = timeFont.height;
+  const dateH   = dateFont.height;
+  const GAP     = 6;
 
-  // Vertically center time + date block
-  const timeH    = timeFont.height;
-  const dateH    = dateFont.height;
-  const gap      = 6;
-  const contentH = timeH + gap + dateH;
-  let   y        = Math.round((H - contentH) / 2);
+  // All four elements form one centred block — safe on both rect and round displays
+  const contentH = infoH + GAP + timeH + GAP + dateH;
+  let y = Math.round((H - contentH) / 2);
+
+  // Info row: battery % right-aligned, BT left-aligned when disconnected
+  const batW = render.getTextWidth(batStr, infoFont);
+  render.drawText(batStr, infoFont, batteryLevel <= 20 ? RED : GRAY, W - batW - MARGIN, y);
+  if (!connected) render.drawText("BT", infoFont, RED, MARGIN, y);
+  y += infoH + GAP;
 
   // Time
-  const timeStr = formatTime(now);
-  const timeW   = render.getTextWidth(timeStr, timeFont);
+  const timeW = render.getTextWidth(timeStr, timeFont);
   render.drawText(timeStr, timeFont, WHITE, Math.round((W - timeW) / 2), y);
-  y += timeH + gap;
+  y += timeH + GAP;
 
   // Date
-  const dateStr = formatDate(now);
-  const dateW   = render.getTextWidth(dateStr, dateFont);
+  const dateW = render.getTextWidth(dateStr, dateFont);
   render.drawText(dateStr, dateFont, GRAY, Math.round((W - dateW) / 2), y);
 
   render.end();

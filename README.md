@@ -115,3 +115,10 @@ Pebble-apps/
 ### 2026-05-23 (continued)
 - Added `sensor-diagnostics` — 3-page watchapp showing battery, BT, time, accelerometer X/Y/Z, step count, and live button state; graceful N/A for absent sensors
 - Added diagnostics mockups for all 3 pages on emery and gabbro (`assets/diagnostics-*`)
+
+### 2026-05-23 (layout fixes)
+- `tutorial-watchface`: fixed disconnect "X" overlapping the battery bar; clamped centred content to never collide with top chrome
+- `minimalist-digital`: moved battery % and BT indicator into the vertically-centred content block — previously both were clipped off-screen on the gabbro round display
+- `sensor-diagnostics`: merged header title and page number into one line to fix overlap; fixed `drawDivider` drawing at the wrong position (lines were rendering on top of row text); rewrote all four divider call sites with correct gap pattern
+- Regenerated all mockups to reflect corrected layouts
+- Added Layout Rules section to `CLAUDE.md` documenting safe-zone, divider, and centring guidelines

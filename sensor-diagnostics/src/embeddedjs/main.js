@@ -26,10 +26,10 @@ const fontSm = parseBMF(parseRLE(new Resource("Gothic-Regular-18.fnt")));
 const fontMd = parseBMF(parseRLE(new Resource("Gothic-Bold-18.fnt")));
 const fontHd = parseBMF(parseRLE(new Resource("Gothic-Bold-24.fnt")));
 
-const ROW_H    = fontSm.height + 4;
-const HDR_H    = fontHd.height + 6;
-const MARGIN   = 6;
-const DIVIDER_Y = HDR_H + 2;
+const ROW_H     = fontSm.height + 4;
+const HDR_H     = fontMd.height + 10;  // single-line header using fontMd
+const MARGIN    = 6;
+const DIVIDER_Y = HDR_H + 1;
 
 // ─── Pages ───────────────────────────────────────────────────────────────────
 
@@ -111,25 +111,21 @@ function dateStr() {
 // ─── Drawing ──────────────────────────────────────────────────────────────────
 
 function drawHeader(title) {
-  // Background strip
   render.fillRectangle(CYAN, 0, 0, W, HDR_H);
 
-  // Page title centered
-  const tw = render.getTextWidth(title, fontHd);
-  render.drawText(title, fontHd, BLACK, Math.round((W - tw) / 2), 3);
+  // Single line: "TITLE  n/N", vertically centred in header band
+  const label = `${title}  ${page + 1}/${PAGES.length}`;
+  const ty    = Math.round((HDR_H - fontMd.height) / 2);
 
-  // Nav arrows
-  const arrowColor = BLACK;
-  if (page > 0) render.drawText("◀", fontMd, arrowColor, MARGIN, 3);
-  if (page < PAGES.length - 1) render.drawText("▶", fontMd, arrowColor, W - render.getTextWidth("▶", fontMd) - MARGIN, 3);
+  if (page > 0)
+    render.drawText("◀", fontMd, BLACK, MARGIN, ty);
+  if (page < PAGES.length - 1)
+    render.drawText("▶", fontMd, BLACK, W - render.getTextWidth("▶", fontMd) - MARGIN, ty);
 
-  // Page indicator
-  const indicator = `${page + 1}/${PAGES.length}`;
-  const iw = render.getTextWidth(indicator, fontSm);
-  render.drawText(indicator, fontSm, arrowColor, Math.round((W - iw) / 2), HDR_H - fontSm.height - 2);
+  const lw = render.getTextWidth(label, fontMd);
+  render.drawText(label, fontMd, BLACK, Math.round((W - lw) / 2), ty);
 
-  // Divider
-  render.fillRectangle(GRAY, 0, DIVIDER_Y, W, 1);
+  render.fillRectangle(GRAY, 0, HDR_H, W, 1);
 }
 
 function drawRow(label, value, valueColor, y) {
@@ -139,7 +135,7 @@ function drawRow(label, value, valueColor, y) {
 }
 
 function drawDivider(y) {
-  render.fillRectangle(render.makeColor(40, 40, 40), MARGIN, y + ROW_H / 2, W - MARGIN * 2, 1);
+  render.fillRectangle(render.makeColor(40, 40, 40), MARGIN, y, W - MARGIN * 2, 1);
 }
 
 // Page 1: System
@@ -164,7 +160,7 @@ function drawSystem() {
           state.connected ? GREEN : RED, y);
   y += ROW_H;
 
-  drawDivider(y - ROW_H / 2);
+  y += 3; drawDivider(y); y += 5;
 
   drawRow("Time", timeStr(), WHITE, y);
   y += ROW_H;
@@ -172,7 +168,7 @@ function drawSystem() {
   drawRow("Date", dateStr(), WHITE, y);
   y += ROW_H;
 
-  drawDivider(y - ROW_H / 2);
+  y += 3; drawDivider(y); y += 5;
 
   drawRow("Uptime", formatUptime(), GRAY, y);
 }
@@ -192,8 +188,7 @@ function drawMotion() {
     y += ROW_H * 3;
   }
 
-  drawDivider(y);
-  y += 6;
+  y += 3; drawDivider(y); y += 5;
 
   const stepsVal = (state.steps !== null) ? String(state.steps) : "N/A";
   drawRow("Steps", stepsVal, CYAN, y);
@@ -206,8 +201,7 @@ function drawInput() {
   const lastColor = state.lastButton === "—" ? GRAY : YELLOW;
   drawRow("Last btn", state.lastButton.toUpperCase(), lastColor, y); y += ROW_H;
 
-  drawDivider(y);
-  y += 6;
+  y += 3; drawDivider(y); y += 5;
 
   function btnRow(label, pressed) {
     drawRow(label, pressed ? "PRESSED" : "released", pressed ? YELLOW : GRAY, y);

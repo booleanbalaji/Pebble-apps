@@ -140,6 +140,33 @@ pebble install --emulator gabbro   # test round display
 
 Do not skip this step even for small changes. The README is the living record of the project.
 
+## Layout Rules
+
+Follow these rules in every drawing function to avoid overlaps and clipping.
+
+**General**
+- Never hardcode a pixel y position for a floating UI element. Always derive y from font metrics, screen dimensions, and adjacent elements.
+- After drawing any element at y, advance before drawing the next: `y += element.height + gap`.
+- Clamp bottom overflow: ensure `y + element.height <= H - MARGIN` before drawing.
+
+**Status indicators (battery, BT, connection)**
+- Do NOT place status indicators at a hardcoded corner like `y = 6` — those coordinates are outside the visible circle on the gabbro round display (260×260, radius 130 px, corners ~175 px from centre).
+- Include status as a row inside the vertically-centred content block instead of floating it at the corners. This keeps it safe on both rectangular and circular displays.
+- Inscribed-square safe zone for gabbro: x from `W * 0.15` to `W * 0.85`, y from `H * 0.15` to `H * 0.85`.
+
+**Centered content blocks**
+- Compute `contentH` to include ALL rows before calculating `y = Math.round((H - contentH) / 2)`.
+- When fixed chrome (battery bar, header) occupies the top, clamp: `y = Math.max(chromeBottom + gap, Math.round((H - contentH) / 2))`.
+
+**Dividers**
+- `drawDivider(y)` must draw at exactly `y` — no internal offset.
+- Call pattern: `y += 3; drawDivider(y); y += 5;` — always leave a gap before and after.
+
+**Headers**
+- Never stack two text elements at overlapping y positions inside the same header band.
+- Combine title and page number into one string: e.g. `"SYSTEM  1/3"`.
+- Vertically centre text in the header: `ty = Math.round((HDR_H - font.height) / 2)`.
+
 ## Notes
 - Font resource names (`Jersey10-Regular-56.fnt`, `Bitham-Bold-42.fnt`, etc.) must match the exact names provided by your installed Alloy SDK. Check `pebble.sdkVersion` in package.json and the SDK docs if build fails on font resources.
 - Alloy currently officially targets `emery` and `gabbro`. The Pebble 2 Duo (asterix) may require PebbleOS ≥ 4.9.127 to run Alloy apps; check release notes at https://developer.repebble.com/sdk/changelogs/4.9.127/
